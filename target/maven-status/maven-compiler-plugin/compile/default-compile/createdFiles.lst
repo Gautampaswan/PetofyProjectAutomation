@@ -1,0 +1,5 @@
+org\Petofy\RegisterPet.class
+org\Petofy\SearchFunctionality.class
+org\Petofy\loginpage.class
+org\Petofy\loginValidation.class
+org\Petofy\utils\AndroidActions.class
