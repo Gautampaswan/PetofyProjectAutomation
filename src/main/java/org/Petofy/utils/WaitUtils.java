@@ -33,4 +33,9 @@ public class WaitUtils {
     public WebElement waitForVisibility(WebElement element) {
         return wait.until(ExpectedConditions.visibilityOf(element));
     }
+
+    public WebElement waitForVisibility(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'waitForVisibility'");
+    }
 }

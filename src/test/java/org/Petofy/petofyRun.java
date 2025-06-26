@@ -17,6 +17,7 @@ import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.PointerInput.Origin;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.appium.java_client.AppiumBy;
@@ -29,7 +30,21 @@ public class petofyRun extends runntvBaseClass {
 	// private static final Logger logger = LogManager.getLogger(petofyRun.class);
 
 	@Test
-	public void petofyTest() throws InterruptedException {
+	public void verifyMyPetsText() {
+		loginpage loginPage = new loginpage(driver);
+		loginPage.setallowButton();
+		loginPage.secondAllow();
+		loginPage.setLoginClick();
+		loginPage.setEmailField("vet.petofy@gmail.com");
+		loginPage.setPasswordField("Pass@123");
+		loginPage.setSignIn();
+		HomePageUI homePageUI = new HomePageUI(driver);
+		homePageUI.validateMyPetsText();
+
+	}
+
+	@Test(dataProvider = "getData")
+	public void petofyTest(String petname, String petParentname) throws InterruptedException {
 
 		loginpage loginPage = new loginpage(driver);
 		loginPage.setallowButton();
@@ -39,20 +54,22 @@ public class petofyRun extends runntvBaseClass {
 		loginPage.setPasswordField("Pass@123");
 		loginPage.setSignIn();
 		// loginPage.clickPlusIcon();
-
+		// HomePageUI homePageUI = new HomePageUI(driver);
+		// homePageUI.validateMyPetsText();
 		RegisterPet registerPet = new RegisterPet(driver);
+		registerPetWithValidation RegisterPetWithValidation = new registerPetWithValidation(driver);
 		registerPet.clickPlusIcon();
+		RegisterPetWithValidation.validatePetCategory();
 		registerPet.checkPetCategoryText();
 		registerPet.petCategory();
 		registerPet.selectPetType();
-		registerPet.checkGender();
-		registerPet.checkMale();
-		registerPet.checFemale();
-		registerPet.ChooseGender();
-		registerPet.ClickBreedDropdown();
-		registerPet.selectBreedName();
+		RegisterPetWithValidation.validateGender(); // registerPet.selectPetType();
+		registerPet.ChooseGender(); // registerPet.checkGender();
+		registerPet.ClickBreedDropdown(); // registerPet.checkMale();
+		registerPet.selectBreedName(); // registerPet.checFemale();
+
 		registerPet.checkPetName();
-		registerPet.petName("dogy");
+		registerPet.petName(petname);// dogy
 		registerPet.checkDateOfBirth();
 		registerPet.DOBofPet();
 		registerPet.selectDaydropdown();
@@ -61,7 +78,7 @@ public class petofyRun extends runntvBaseClass {
 		registerPet.clickpetcolordropdown();
 		registerPet.selectPetcolorDropdown();
 		registerPet.checkPetParent();
-		registerPet.petParentname("rakesh");
+		registerPet.petParentname(petParentname);// rakesh
 		registerPet.scrollScreen();
 		registerPet.checkwhatsAppNumber();
 		registerPet.enterWhatsappNumber("9984665660");
@@ -78,8 +95,18 @@ public class petofyRun extends runntvBaseClass {
 		SearchFunctionality search = new SearchFunctionality(driver);
 		search.clickSearchbox();
 		search.typePetName("dogy");
+		search.clickSearchIcon();
 		search.addClinicButton();
+		search.ClickAddclinicVisit();
+		search.clickOnNextbutton();
+		search.selectNatureOfVisitOption();
+		search.selectImmunizationOption();
+	}
 
+	@DataProvider
+	public Object[][] getData() {
+
+		return new Object[][] { { "Tinni", "Jackey" } };
 	}
 }
 
