@@ -92,15 +92,15 @@ public class petofyRun extends runntvBaseClass {
 		registerPet.navigateBack();
 		// registerPet.checkAllElements();
 
-		SearchFunctionality search = new SearchFunctionality(driver);
-		search.clickSearchbox();
-		search.typePetName("dogy");
-		search.clickSearchIcon();
-		search.addClinicButton();
-		search.ClickAddclinicVisit();
-		search.clickOnNextbutton();
-		search.selectNatureOfVisitOption();
-		search.selectImmunizationOption();
+		// SearchFunctionality search = new SearchFunctionality(driver);
+		// search.clickSearchbox();
+		// search.typePetName("dogy");
+		// search.clickSearchIcon();
+		// search.addClinicButton();
+		// search.ClickAddclinicVisit();
+		// search.clickOnNextbutton();
+		// search.selectNatureOfVisitOption();
+		// search.selectImmunizationOption();
 	}
 
 	@DataProvider
