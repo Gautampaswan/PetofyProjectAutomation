@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    environment {
+        BROWSERSTACK_USERNAME = 'chiragpaswan_wQh5KY'
+        BROWSERSTACK_ACCESSKEY = '9zahoZzNwyhD41n1GhsP'
+    }
+
+    tools {
+        maven 'Maven' // 👈 Same as in Jenkins Global Tool Configuration
+    }
+
+    triggers {
+        cron('H/2 * * * *
+') // Once every year (example)
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build and Run Appium Tests') {
+            steps {
+                bat ''' 
+                    mvn clean test ^
+                    -Dbrowserstack.user=%BROWSERSTACK_USERNAME% ^
+                    -Dbrowserstack.key=%BROWSERSTACK_ACCESSKEY% ^
+                    -Dplatform=android ^
+                    -Ddevice="Samsung Galaxy S23" ^
+                    -Dos_version=13.0
+                '''
+                // Use `sh` instead of `bat` if running on Linux agent
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Build finished.'
+        }
+        success {
+            echo '✅ Appium tests passed on BrowserStack!'
+        }
+        failure {
+            echo '❌ Appium tests failed!'
+        }
+    }
+}

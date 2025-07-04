@@ -1,47 +1,44 @@
 package org.Petofy;
 
-import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Arrays;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.options.UiAutomator2Options;
-import io.appium.java_client.service.local.AppiumDriverLocalService;
-import io.appium.java_client.service.local.AppiumServiceBuilder;
 
 public class runntvBaseClass {
+
 	public AndroidDriver driver;
-	public AppiumDriverLocalService service;
 
 	@BeforeClass
-	public void runntvCode() throws MalformedURLException, URISyntaxException {
-		service = new AppiumServiceBuilder()
-				.withAppiumJS(
-						new File("\\Users\\cyno\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js"))
-				.withIPAddress("127.0.0.1").usingPort(4723).build();
-		service.start();
+	public void runntvCode() throws MalformedURLException {
 
-		UiAutomator2Options options = new UiAutomator2Options();
-		options.setDeviceName("Pixel 6a API 30"); // Pixel 4 XL API 34/
-		options.setApp(
-				"C:\\Resources\\app-debug.apk");
-		// options.setApp("C:\\Users\\cyno\\OneDrive\\runntv\\Appium\\src\\test\\java\\APKResource\\app-debug
-		// 25 (2).apk");
-		driver = new AndroidDriver(new URI("http://127.0.0.1:4723").toURL(), options);
+		// Load from system property or fallback
+		String username = System.getProperty("browserstack.user", "chiragpaswan_wQh5KY");
+		String accessKey = System.getProperty("browserstack.key", "9zahoZzNwyhD41n1GhsP");
 
+		DesiredCapabilities caps = new DesiredCapabilities();
+		caps.setCapability("browserstack.user", username);
+		caps.setCapability("browserstack.key", accessKey);
+		caps.setCapability("app", "bs://a9a35cf5d82b110ad5a8f5000f559f10c2fb28e7"); // Replace after upload
+		caps.setCapability("device", "Google Pixel 6a");
+		caps.setCapability("os_version", "13.0");
+		caps.setCapability("project", "Runntv Appium Project");
+		caps.setCapability("build", "Runntv Build 1");
+		caps.setCapability("name", "Runntv Scroll Test");
+
+		driver = new AndroidDriver(new URL("http://hub.browserstack.com/wd/hub"), caps);
 	}
 
 	public void scroll() throws InterruptedException {
-
 		PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
 
 		int numberOfIterations = 1;
@@ -63,14 +60,10 @@ public class runntvBaseClass {
 		}
 	}
 
-	// public void scroll() throws InterruptedException {
-	//
-	// }
-	//
 	@AfterClass
 	public void teardown() {
-		// driver.quit();
-		service.stop();
+		if (driver != null) {
+			driver.quit();
+		}
 	}
-
 }
