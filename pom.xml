@@ -23,7 +23,19 @@
     <artifactId>java-client</artifactId>
     <version>8.6.0</version> <!-- Use latest 8.x version -->
   </dependency>
+<!-- Allure Core -->
+<dependency>
+  <groupId>io.qameta.allure</groupId>
+  <artifactId>allure-java-commons</artifactId>
+  <version>2.24.0</version>
+</dependency>
 
+<!-- Allure TestNG Support -->
+<dependency>
+  <groupId>io.qameta.allure</groupId>
+  <artifactId>allure-testng</artifactId>
+  <version>2.24.0</version>
+</dependency>
 
     <!-- TestNG -->
     <dependency>
@@ -44,6 +56,18 @@
       <artifactId>log4j-api</artifactId>
       <version>2.14.1</version>
     </dependency>
+    <dependency>
+      <groupId>ru.yandex.qatools.ashot</groupId>
+      <artifactId>ashot</artifactId>
+      <version>1.5.4</version>
+  </dependency>
+  <dependency>
+    <groupId>net.sourceforge.tess4j</groupId>
+    <artifactId>tess4j</artifactId>
+    <version>5.4.0</version>
+</dependency>
+
+  
   </dependencies>
 
   <build>
