@@ -1,5 +1,8 @@
 package org.Petofy;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import org.Petofy.utils.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -22,15 +25,25 @@ public class RunnTvTabs {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
-    // @AndroidFindBy(id = "//android.widget.TextView[@text='Featured']")
-    // private WebElement FavouriteTab;
+    @AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.HorizontalScrollView\").instance(1)")
+    private WebElement horizontalScrollViewOne;
 
-    public void verifyFeaturedTabText() {
+    public void secondAllow() {
         try {
-            // Wait for element to be visible
-            // WebElement element = waitUtils.waitForVisibility(FavouriteTab);
+            WebElement clickAllowbutton = waitUtils.waitForClickability(
+                    By.id("com.android.permissioncontroller:id/permission_allow_button"));
+            clickAllowbutton.click();// com.android.permissioncontroller:id/permission_allow_button
+        } catch (TimeoutException e) {
+            System.out.println("second allow icon was not clickable within the timeout period");
+        }
+    }
+
+    public void verifyFeaturedTabText() throws Exception {
+        try {
+
             // Wait for element to be visible
             WebElement element = waitUtils.waitForVisibility(By.xpath("//android.widget.TextView[@text='Featured']"));
+
             // Extract text
             String extractedText = element.getText();
 
@@ -39,6 +52,9 @@ public class RunnTvTabs {
             // Compare with expected value
             if (extractedText.equals("Featured")) {
                 System.out.println("✅ Featured tab is visible with correct text.");
+                element.click();
+                // horizontalScrollViewOne.click();
+                // verifyPlayback();
 
             } else {
                 System.out.println("❌ Text mismatch. Found: " + extractedText);
@@ -225,4 +241,41 @@ public class RunnTvTabs {
             System.out.println("Devotional tab not found within timeout.");
         }
     }
+
+    public void verifyPlayback() throws Exception {
+        System.out.println("⏳ Waiting 15 seconds for video UI to load...");
+        Thread.sleep(15000); // Adjust based on your app's behavior
+
+        System.out.println("🧹 Clearing previous logs...");
+        Runtime.getRuntime().exec("adb logcat -c");
+        Thread.sleep(2000); // Allow time to clear
+
+        System.out.println("📡 Waiting another 15 seconds for playback to start...");
+        Thread.sleep(15000); // Let playback attempt to start
+
+        Process process = Runtime.getRuntime().exec("adb logcat -d | grep ExoPlayer");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+        String line;
+        boolean isPlaying = false;
+
+        while ((line = reader.readLine()) != null) {
+            System.out.println("📄 Log: " + line);
+            if ((line.contains("Playback state") && line.contains("READY")) ||
+                    (line.contains("ExoPlayerImpl") && line.contains("Init")) ||
+                    line.contains("Renderer started") ||
+                    line.contains("startPlayback") ||
+                    line.contains("playWhenReady=true")) {
+                isPlaying = true;
+                break;
+            }
+        }
+
+        if (!isPlaying) {
+            throw new RuntimeException("❌ Playback did not start within expected time.");
+        } else {
+            System.out.println("✅ Playback verified successfully.");
+        }
+    }
+
 }

@@ -244,7 +244,14 @@ public class MenuButton {
     }
 
     public void verifyAppLanguage() {
+
         try {
+            WebElement menuButton = waitUtils.waitForVisibility(By.xpath("//com.horcrux.svg.CircleView"));
+            menuButton.click();
+            WebElement appSettings = waitUtils.waitForVisibility(
+                    By.xpath("//android.widget.TextView[@text='App Settings']"));
+            appSettings.click();
+
             WebElement clickAppLanguage = waitUtils
                     .waitForVisibility(By.xpath("//android.widget.TextView[@text=\"App Language\"]"));
             clickAppLanguage.click();
@@ -267,6 +274,62 @@ public class MenuButton {
                 System.out.println("Hindi language Option is not visible");
             }
 
+            List<String> expectedHindiString = Arrays.asList(
+                    "फीचर्ड", "मूवीज", "म्यूजिक", "न्यूज़", "किड्स",
+                    "लघु फिल्में", "एंटरटेनमेंट", "हेल्थ और फिटनेस", "भक्ति");
+
+            List<By> locatorsForHindi = Arrays.asList(
+                    By.xpath("(//android.widget.TextView[@text=\"फीचर्ड\"])[1]"),
+                    By.xpath("(//android.widget.TextView[@text=\"मूवीज\"])[1]"),
+                    By.xpath("(//android.widget.TextView[@text=\"म्यूजिक\"])[1]"),
+                    By.xpath("(//android.widget.TextView[@text=\"न्यूज़\"])[1]"),
+                    By.xpath("//android.widget.TextView[@text=\"किड्स\"]"),
+                    By.xpath("//android.widget.TextView[@text=\"लघु फिल्में\"]"),
+                    By.xpath("//android.widget.TextView[@text=\"एंटरटेनमेंट\"]"),
+                    By.xpath("//android.widget.TextView[@text=\"हेल्थ और फिटनेस\"]"),
+                    By.xpath("//android.widget.TextView[@text=\"भक्ति\"]"));
+
+            List<String> actualHindiTexts = new ArrayList<>();
+            boolean allMatch = true;
+
+            for (int i = 0; i < locatorsForHindi.size(); i++) {
+                try {
+                    WebElement element = waitUtils.waitForVisibility(locatorsForHindi.get(i));
+
+                    // Click the element first
+                    element.click();
+                    Thread.sleep(1000); // Optional wait after click if needed
+
+                    // Extract text after click
+                    String text = element.getText();
+                    System.out.println("✅ Clicked and Found: " + text);
+                    actualHindiTexts.add(text);
+
+                    // Compare with expected
+                    if (!expectedHindiString.get(i).equals(text)) {
+                        allMatch = false;
+                        System.out.println("❌ Mismatch at index " + i + ": Expected ["
+                                + expectedHindiString.get(i) + "] but found [" + text + "]");
+                    }
+
+                } catch (TimeoutException e) {
+                    System.out.println(
+                            "❌ Timeout: Could not find element for expected text: " + expectedHindiString.get(i));
+                    actualHindiTexts.add("Not Found");
+                    allMatch = false;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    actualHindiTexts.add("Error");
+                    allMatch = false;
+                }
+            }
+
+            // Final result
+            if (allMatch) {
+                System.out.println("✅ All Hindi tab texts matched after clicking.");
+            } else {
+                System.out.println("❌ One or more Hindi tab texts mismatched.");
+            }
         }
 
         catch (TimeoutException e) {

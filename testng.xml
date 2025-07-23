@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Playback Suite">
+  <test name="Playback Test">
+    <classes>
+      <class name="org.Petofy.PlaybackTest" />
+    </classes>
+  </test>
+</suite>
