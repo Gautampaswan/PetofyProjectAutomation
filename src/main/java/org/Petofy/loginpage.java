@@ -50,7 +50,7 @@ public class loginpage extends AndroidActions {
 		try {
 			WebElement clickAllowbutton = waitUtils.waitForClickability(
 					By.id("com.android.permissioncontroller:id/permission_allow_button"));
-			clickAllowbutton.click();
+			clickAllowbutton.click();// com.android.permissioncontroller:id/permission_allow_button
 		} catch (TimeoutException e) {
 			System.out.println("second allow icon was not clickable within the timeout period");
 		}

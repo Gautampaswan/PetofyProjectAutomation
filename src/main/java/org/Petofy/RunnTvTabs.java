@@ -28,16 +28,6 @@ public class RunnTvTabs {
     @AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.HorizontalScrollView\").instance(1)")
     private WebElement horizontalScrollViewOne;
 
-    public void secondAllow() {
-        try {
-            WebElement clickAllowbutton = waitUtils.waitForClickability(
-                    By.id("com.android.permissioncontroller:id/permission_allow_button"));
-            clickAllowbutton.click();// com.android.permissioncontroller:id/permission_allow_button
-        } catch (TimeoutException e) {
-            System.out.println("second allow icon was not clickable within the timeout period");
-        }
-    }
-
     public void verifyFeaturedTabText() throws Exception {
         try {
 

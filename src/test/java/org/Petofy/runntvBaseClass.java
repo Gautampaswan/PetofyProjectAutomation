@@ -7,7 +7,11 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Arrays;
 
+import org.Petofy.utils.WaitUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.testng.annotations.AfterClass;
@@ -24,6 +28,7 @@ public class runntvBaseClass {
 
 	public AndroidDriver driver;
 	public AppiumDriverLocalService service;
+	private WaitUtils waitUtils;
 
 	@BeforeMethod
 	public void runntvCode() throws MalformedURLException, URISyntaxException {
@@ -34,7 +39,7 @@ public class runntvBaseClass {
 		service.start();
 
 		UiAutomator2Options options = new UiAutomator2Options();
-		options.setDeviceName("Pixel 6a API 30"); // Pixel 4 XL API 34/
+		options.setDeviceName("Pixel 4a"); // Pixel 4 XL API 34/Pixel 6a API 33
 		options.setApp(
 				"C:\\Resources\\RunnTV 1.apk");// "C:\Resources\RunnTV 1.apk"
 
